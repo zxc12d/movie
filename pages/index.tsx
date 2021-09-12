@@ -1,11 +1,13 @@
-import type {NextPage} from 'next'
+import type {GetStaticProps, InferGetStaticPropsType, NextPage} from 'next'
 import {useVod, useVodDetail} from "../hooks/useVod";
 import {useCallback, useContext, useEffect, useState} from "react";
-import {Vod, VodDetail} from "../types";
+import {CommonResponse, Vod, VodDetail} from "../types";
 import Image from "next/image";
 import {Pagination, Spin} from "antd";
 import {GlobalCxt} from "./_app";
 import Link from 'next/link'
+import useSwr from "swr";
+import {get} from "../utils";
 
 type VodAndDetail = Vod & {
     vod_pic: string
@@ -20,14 +22,33 @@ const Item = ({img, id, title}: { img: string, id: number, title: string }) => {
     </Link>
 }
 
-const Home: NextPage = () => {
+export const getStaticProps: GetStaticProps = async (context) => {
+    let vod: CommonResponse<Vod> = await get(`https://apihjzy.com/api.php/provide/vod/?ac=list&pg=1`)
+    let vodDetail: CommonResponse<VodDetail> = await get(`https://apihjzy.com/api.php/provide/vod/?ac=detail&ids=${vod.list.map(i => i.vod_id)}`)
+
+    let vodDataInit: VodAndDetail[] = vod.list.map(i => {
+        let detail = vodDetail.list.find(j => j.vod_id === i.vod_id)
+        return {...i, vod_pic: detail?.vod_pic || ''}
+    })
+
+    return {
+        props: {
+            fallback: {
+                vodDataInit
+            }
+        }, // will be passed to the page component as props
+    }
+}
+
+const Home: NextPage = ({vodDataInit}: InferGetStaticPropsType<typeof getStaticProps>) => {
     const global = useContext(GlobalCxt)
     //当前页
     const [currPage, setCurrPage] = useState(1)
     const {vod, isLoading} = useVod(currPage, global.tid)
     const [total, setTotal] = useState(vod?.total || 0)
     const {vodDetail} = useVodDetail(vod?.list.map(i => i.vod_id))
-    const [vodData, setVodData] = useState<VodAndDetail[]>()
+    const [vodData, setVodData] = useState<VodAndDetail[]>(vodDataInit)
+
     const handleChangePage = useCallback((v) => {
         setCurrPage(v)
     }, [])
@@ -47,9 +68,9 @@ const Home: NextPage = () => {
         setVodData(res)
     }, [vod, vodDetail])
 
-    if (isLoading) {
-        return <div className={'text-center'}><Spin/></div>
-    }
+    // if (isLoading) {
+    //     return <div className={'text-center'}><Spin/></div>
+    // }
 
     return <div>
         <div className={'grid grid-cols-2 md:grid-cols-5'}>
