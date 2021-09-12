@@ -13,13 +13,12 @@ class MyDocument extends Document {
                     <link rel="shortcut icon" href="/favicon.ico" />
                     <meta
                         name="keywords"
-                        content="电影文案网,文案网"
+                        content="AV,av,女优,日本,欧美"
                     />
                     <meta
                         name="description"
-                        content="电影文案网,文案，电影"
+                        content="AV,av,女优,日本,欧美"
                     />
-                    <meta name="baidu-site-verification" content="code-OD1Ep4Bm7W" />
                 </Head>
                 <body>
                 <Main/>
