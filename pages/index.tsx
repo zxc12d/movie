@@ -1,13 +1,10 @@
 import type {GetStaticProps, InferGetStaticPropsType, NextPage} from 'next'
-import {useVod, useVodDetail} from "../hooks/useVod";
-import {useCallback, useContext, useEffect, useState} from "react";
-import {ClassType, CommonResponse, Vod, VodDetail} from "../types";
+import {useContext} from "react";
+import {CommonResponse, Vod, VodDetail} from "../types";
 import Image from "next/image";
-import {Pagination, Spin} from "antd";
 import {GlobalCxt} from "./_app";
 import Link from 'next/link'
-import useSwr from "swr";
-import {fetcher, get} from "../utils";
+import {get} from "../utils";
 
 type VodAndDetail = Vod & {
     vod_pic: string
@@ -17,7 +14,7 @@ type VodAndDetail = Vod & {
 const Item = ({img, id, title}: { img: string, id: number, title: string }) => {
     return <Link href={`/${id}`} passHref={true}>
         <div className={'flex flex-col justify-center items-center px-1 cursor-pointer'}>
-            <Image src={img} alt={title} width={170} height={240} className={'object-cover'}/>
+            <Image src={img} alt={title} width={160} height={240} className={'object-cover'}/>
             <div className={'truncate w-40 text-center text-xl my-2 mb-10'}>{title}</div>
         </div>
     </Link>
@@ -77,7 +74,6 @@ const HomeList = ({list}: { list: VodAndDetail[] }) => {
 }
 
 const Home: NextPage = ({
-                            vodDataInit,
                             total,
                             classList,
                             movieData,
