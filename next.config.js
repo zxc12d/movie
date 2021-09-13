@@ -21,12 +21,12 @@ module.exports = withAntdLess({
         return [
             {
                 source: '/japi/:slug*',
-                destination:'https://api.apibdzy.com/api.php/:slug*'
+                destination:'https://m3u8.apibdzy.com/api.php/:slug*'
             }
         ]
     },
 
     images:{
-        domains:['img.hjimg.com']
+        domains:['img.hjimg.com','img.52swat.cn']
     },
 });

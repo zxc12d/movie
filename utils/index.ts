@@ -72,6 +72,7 @@ const getRequest = (method: string) => {
 }
 
 export const get = getRequest('GET')
+// export const fetcher = (url: string) => fetch(url).then(i => i.json())
 export const fetcher = get
 
 export const post = getRequest('POST')

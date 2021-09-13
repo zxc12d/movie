@@ -9,6 +9,7 @@ export const useVod = (page: number = 1, tid?: number) => {
         error
     } = useSwr<CommonResponse<Vod>>(`provide/vod/?ac=list&pg=${page}${tid ? '&t=' + tid : ''}`, fetcher)
 
+    console.log(data)
     return {
         vod: data,
         isLoading: !error && !data,
