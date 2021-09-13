@@ -13,20 +13,22 @@ class MyDocument extends Document {
                     <link rel="shortcut icon" href="/favicon.ico"/>
                     <meta
                         name="keywords"
-                        content="AV,av,女优,日本,欧美"
+                        content="电影,日韩,欧美,猫视频"
                     />
                     <meta
                         name="description"
-                        content="AV,av,女优,日本,欧美"
+                        content="电影"
                     />
                     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0J47625QQ"/>
-                    <script dangerouslySetInnerHTML={{__html:`
+                    <script dangerouslySetInnerHTML={{
+                        __html: `
                       window.dataLayer = window.dataLayer || [];
                         function gtag(){dataLayer.push(arguments);}
                         gtag('js', new Date());
 
                         gtag('config', 'G-P0J47625QQ');
-                    `}}/>
+                    `
+                    }}/>
                 </Head>
                 <body>
                 <Main/>

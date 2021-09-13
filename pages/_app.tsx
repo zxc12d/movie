@@ -15,7 +15,7 @@ function MyApp({Component, pageProps}: AppProps) {
 
     return <GlobalCxt.Provider value={{tid, setTid}}>
         <Head>
-            <title>小草影院</title>
+            <title>猫视频</title>
         </Head>
         <MyLayout>
             <Component {...pageProps} />
