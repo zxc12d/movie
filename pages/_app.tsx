@@ -1,5 +1,6 @@
 import type {AppProps} from 'next/app'
 import Head from "next/head";
+import 'antd/dist/antd.css'
 import "tailwindcss/tailwind.css";
 import MyLayout from "../components/MyLayout";
 import React, {useState} from "react";

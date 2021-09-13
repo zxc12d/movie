@@ -23,8 +23,8 @@ const Item = ({img, id, title}: { img: string, id: number, title: string }) => {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    let vod: CommonResponse<Vod> = await get(`https://apihjzy.com/api.php/provide/vod/?ac=list&pg=1`)
-    let vodDetail: CommonResponse<VodDetail> = await get(`https://apihjzy.com/api.php/provide/vod/?ac=detail&ids=${vod.list.map(i => i.vod_id)}`)
+    let vod: CommonResponse<Vod> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=list&pg=1`)
+    let vodDetail: CommonResponse<VodDetail> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=detail&ids=${vod.list.map(i => i.vod_id)}`)
 
     let vodDataInit: VodAndDetail[] = vod.list.map(i => {
         let detail = vodDetail.list.find(j => j.vod_id === i.vod_id)
