@@ -4,6 +4,8 @@ import {useEffect, useState} from "react";
 import {GetStaticPaths, GetStaticProps} from "next";
 import {CommonResponse, Vod, VodDetail} from "../types";
 import {get} from "../utils";
+import {Tabs} from "antd";
+import {TabPane} from "rc-tabs";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     let vod: CommonResponse<Vod> = await get(`/provide/vod/?ac=list`)
@@ -73,6 +75,16 @@ const Detail = ({detail}: { detail: VodDetail }) => {
         }
     }, [playUrl, url])
 
+    const [p1Playing,setP1Playing] = useState(true)
+    const handleChangePlayer=(i:string)=>{
+            if (i==='p1'){
+                setP1Playing(true)
+            }else{
+                setP1Playing(false)
+            }
+
+    }
+
     return <div className={'mb-10'}>
         <div className={'flex flex-wrap md:flex-nowrap items-center mb-10'}>
             <div className={'w-full md:w-1/2 mr-5 text-center'}>
@@ -86,7 +98,15 @@ const Detail = ({detail}: { detail: VodDetail }) => {
             </div>
         </div>
 
-        <ReactPlayer url={playUrl} playing={true} controls={true} width={'100%'} height={'100%'}/>
+        <Tabs defaultActiveKey={'p1'} onChange={handleChangePlayer}>
+            <TabPane tab={'播放器1'} key={'p1'}>
+                <ReactPlayer url={playUrl} playing={p1Playing} controls={true} width={'100%'} height={'100%'}/>
+            </TabPane>
+            <TabPane tab={'播放器2'} key={'p2'}>
+                <iframe src={'https://jx.jxbdzyw.com/m3u8/?url='+playUrl} width={'100%'} height={400} allowFullScreen={true}/>
+            </TabPane>
+        </Tabs>
+        {/*<ReactPlayer url={playUrl} playing={true} controls={true} width={'100%'} height={'100%'}/>*/}
 
         <PlayList list={computeUrl(detail?.vod_play_url)[1]} setPlayUrl={setPlayUrl}/>
         {/*{computeUrl(detail.vod_play_url).map((i, index) => <PlayList list={i} setPlayUrl={setPlayUrl} key={index}/>)}*/}
