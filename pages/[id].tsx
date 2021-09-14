@@ -65,7 +65,7 @@ const computeUrl = (url: string | undefined) => {
 
 const Detail = ({detail}: { detail: VodDetail }) => {
 
-    const [playUrl, setPlayUrl] = useState(detail?.vod_play_url?.split('#')[0].split('$')[1])
+    const [playUrl, setPlayUrl] = useState(detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1])
     // console.log('play url:', playUrl)
 
     return <div id={'pid'}>

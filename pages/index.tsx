@@ -83,7 +83,7 @@ const HomeTitle = ({name, typeId}: { name: string, typeId: number }) => {
 //列表
 const HomeList = ({list}: { list: VodAndDetail[] }) => {
     return <div className={'flex flex-wrap'}>
-        {list.slice(0, 8).map(i => <Item id={i.vod_id} img={i.vod_pic} title={i.vod_name} key={i.vod_id}/>)}
+        {list.slice(0, 10).map(i => <Item id={i.vod_id} img={i.vod_pic} title={i.vod_name} key={i.vod_id}/>)}
     </div>
 }
 
