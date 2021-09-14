@@ -25,8 +25,8 @@ export async function getDataByTypeId(typeId: number): Promise<VodAndDetail[]> {
 }
 
 export async function getDataByTypeIdAndPage(typeId: number, page: number): Promise<VodAndDetail[]> {
-    let movies: CommonResponse<Vod> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=list&t=${typeId}&pg=${page}`)
-    let movieDetail: CommonResponse<VodDetail> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=detail&ids=${movies.list.map(i => i.vod_id).join(',')}`)
+    let movies: CommonResponse<Vod> = await get(`provide/vod/?ac=list&t=${typeId}&pg=${page}`)
+    let movieDetail: CommonResponse<VodDetail> = await get(`provide/vod/?ac=detail&ids=${movies.list.map(i => i.vod_id).join(',')}`)
 
     return movies.list.map(i => {
         let detail = movieDetail.list.find(j => j.vod_id === i.vod_id)
@@ -36,7 +36,7 @@ export async function getDataByTypeIdAndPage(typeId: number, page: number): Prom
 
 export async function getDataByName(name: string, vod?: CommonResponse<Vod>) {
     if (!vod) {
-        vod = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=list&pg=1`)
+        vod = await get(`/provide/vod/?ac=list&pg=1`)
     }
     let typeId = vod!.class.find(i => i.type_name.endsWith(name))?.type_id
 
@@ -44,11 +44,10 @@ export async function getDataByName(name: string, vod?: CommonResponse<Vod>) {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    let vod: CommonResponse<Vod> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=list&pg=1`)
+    let vod: CommonResponse<Vod> = await get(`provide/vod/?ac=list&pg=1`)
 
     //电影列表
     let movieData = await getDataByName('片')
-    // console.log('moivdata:',movieData)
     //电视剧列表
     let serialsData = await getDataByName('剧')
     //娱乐列表
@@ -73,8 +72,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 const HomeTitle = ({name, typeId}: { name: string, typeId: number }) => {
     return <div className={'flex items-center mb-2'}>
         <div className={'font-semibold text-3xl mr-5'}>{name}</div>
-        <Link href={`/type/${typeId}`} passHref={true}>
-            <div className={'font-medium text-lg cursor-pointer'}>{'查看更多 >'}</div>
+        <Link href={`/type/${typeId}`}>
+            <a>
+                <div className={'font-medium text-lg cursor-pointer select-none'}>{'查看更多 >'}</div>
+            </a>
         </Link>
     </div>
 }
