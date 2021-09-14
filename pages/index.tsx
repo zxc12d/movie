@@ -1,10 +1,12 @@
 import type {GetStaticProps, InferGetStaticPropsType, NextPage} from 'next'
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {ClassType, CommonResponse, Vod, VodDetail} from "../types";
 import Image from "next/image";
 import {GlobalCxt} from "./_app";
 import Link from 'next/link'
 import {get} from "../utils";
+import {Tag} from "antd";
+import {DownOutlined} from "@ant-design/icons";
 
 export type VodAndDetail = Vod & {
     vod_pic: string
@@ -24,21 +26,22 @@ const Item = ({img, id, title}: { img: string, id: number, title: string }) => {
     </Link>
 }
 //标题
-const HomeTitle = ({name, typeId}: { name: string, typeId: number }) => {
+const HomeTitle = ({name, typeId}: { name: string, typeId?: number }) => {
     return <div className={'flex items-center mb-2'}>
         <div className={'font-semibold text-3xl mr-5'}>{name}</div>
-        <Link href={`/type/${typeId}/1`}>
-            <a>
-                <div className={'font-medium text-lg cursor-pointer select-none'}>{'查看更多 >'}</div>
-            </a>
-        </Link>
+        {typeId ?
+            <Link href={`/type/${typeId}/1`}>
+                <a>
+                    <div className={'font-medium text-lg cursor-pointer select-none'}>{'查看更多 >'}</div>
+                </a>
+            </Link> : null}
     </div>
 }
 
 //列表
-const HomeList = ({list}: { list: VodAndDetail[] }) => {
+const HomeList = ({list, count}: { list: VodAndDetail[], count?: number }) => {
     return <div className={'flex flex-wrap justify-between'}>
-        {list.slice(0, 10).map(i => <Item id={i.vod_id} img={i.vod_pic} title={i.vod_name} key={i.vod_id}/>)}
+        {list.slice(0, count || 10).map(i => <Item id={i.vod_id} img={i.vod_pic} title={i.vod_name} key={i.vod_id}/>)}
     </div>
 }
 
@@ -46,14 +49,18 @@ export async function getDataByTypeId(typeId: number): Promise<VodAndDetail[]> {
     return getDataByTypeIdAndPage(typeId, 1)
 }
 
-export async function getDataByTypeIdAndPage(typeId: number, page: number): Promise<VodAndDetail[]> {
-    let movies: CommonResponse<Vod> = await get(`provide/vod/?ac=list&t=${typeId}&pg=${page}`)
+async function getDataByList(movies: CommonResponse<Vod>) {
     let movieDetail: CommonResponse<VodDetail> = await get(`provide/vod/?ac=detail&ids=${movies.list.map(i => i.vod_id).join(',')}`)
 
     return movies.list.map(i => {
         let detail = movieDetail.list.find(j => j.vod_id === i.vod_id)
         return {...i, vod_pic: detail?.vod_pic || ''}
     })
+}
+
+export async function getDataByTypeIdAndPage(typeId: number, page: number): Promise<VodAndDetail[]> {
+    let movies: CommonResponse<Vod> = await get(`provide/vod/?ac=list&t=${typeId}&pg=${page}`)
+    return await getDataByList(movies)
 }
 
 export async function getDataByName(name: string, vod?: CommonResponse<Vod>) {
@@ -65,9 +72,17 @@ export async function getDataByName(name: string, vod?: CommonResponse<Vod>) {
     return await getDataByTypeId(typeId!)
 }
 
+//24小时最新电影
+async function getLatestData() {
+    let movies: CommonResponse<Vod> = await get(`provide/vod/?ac=list&pg=1&h=24`)
+    return await getDataByList(movies)
+}
+
 export const getStaticProps: GetStaticProps = async (context) => {
     let vod: CommonResponse<Vod> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=list&pg=1`)
 
+    //最新列表
+    let latestData = await getLatestData()
     //电影列表
     let movieData = await getDataByName('片')
     //电视剧列表
@@ -82,35 +97,69 @@ export const getStaticProps: GetStaticProps = async (context) => {
             classList: vod.class,
             // vodDataInit,
             total: vod.total,
+            latestData,
             movieData,
             serialsData,
             funData,
             cartoonData
         },
+        revalidate: 86400
     }
 }
 
 const Home: NextPage = ({
                             total,
                             classList,
+                            latestData,
                             movieData,
                             serialsData,
                             funData,
                             cartoonData
                         }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const global = useContext(GlobalCxt)
+    const [showAllTypes, setShowAllTypes] = useState(false)
+    const [typeList, setTypeList] = useState(classList.slice(0, 9))
 
     const getTypeIdByName = (name: string): number => {
         return classList.find((i: ClassType) => i.type_name.endsWith(name)).type_id
     }
+
+    const toggleShowAllType = () => {
+        setShowAllTypes(i => !i)
+        if (showAllTypes) {
+            setTypeList(classList.slice(0, 9))
+        } else {
+            setTypeList(classList)
+
+        }
+    }
+
+
     return <div>
         {/* 分类 */}
-        {/*<div className={'flex flex-wrap mb-8'}>*/}
-        {/*    {classList.map((i: ClassType) => <div*/}
-        {/*        className={'cursor-pointer mr-8 mb-2 hover:bg-blue-100 border-2 rounded-full px-3 py-1'}*/}
-        {/*        key={i.type_id}>*/}
-        {/*        {i.type_name}*/}
-        {/*    </div>)}</div>*/}
+        <div onClick={toggleShowAllType} className={'mb-2 select-none cursor-pointer flex items-center transition-all duration-500'}>
+            <span>{showAllTypes ? '隐藏 ' : '展开全部 '}</span>
+            <DownOutlined/>
+        </div>
+        <div className={'flex flex-wrap mb-8'}>
+            {typeList.map((i: ClassType) => <Link href={'/type/[typeId]/[page]'} as={`/type/${i.type_id}/1`}
+                                                  key={i.type_id}>
+                <a>
+                    <div
+                        className={'cursor-pointer mr-5 mb-2 hover:bg-blue-200 border-2 border-gray-500 rounded-full px-3 py-1'}>
+                        {i.type_name}
+                    </div>
+                    {/*<Tag*/}
+                    {/*    className={'mr-8 mb-2 hover:bg-blue-100  rounded-full px-3 py-1'}*/}
+                    {/*>{i.type_name}</Tag>*/}
+                </a>
+            </Link>)}
+        </div>
+
+        <div>
+            <HomeTitle name={'最新影视'}/>
+            <HomeList list={latestData} count={5}/>
+        </div>
 
         <div>
             <HomeTitle name={'电影'} typeId={getTypeIdByName('片')}/>
