@@ -12,13 +12,13 @@ interface Props {
 
 const MyList = ({data, page, handleChangePage, total}: Props) => {
     return <div>
-        <div className={'flex flex-wrap items-center mb-5'}>
+        <div className={'flex flex-wrap justify-center items-center mb-5'}>
             {data?.map(i =>
                 <Link href={`/${i.vod_id}`} key={i.vod_id}>
                     <a>
                         <div className={'flex flex-col justify-center items-center mr-2 cursor-pointer'}>
-                            <Image src={i?.vod_pic} alt={i.vod_name} width={200} height={300}/>
-                            <div className={'text-lg py-2'}>{i?.vod_name}</div>
+                            <Image src={i?.vod_pic} alt={i.vod_name} width={160} height={250}/>
+                            <div className={'text-lg py-2 overflow-ellipsis truncate'} style={{maxWidth:160}}>{i?.vod_name}</div>
                         </div>
                     </a>
                 </Link>

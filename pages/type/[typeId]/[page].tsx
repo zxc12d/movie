@@ -2,7 +2,7 @@ import {GetStaticPaths, GetStaticProps} from "next";
 import {CommonResponse, Vod} from "../../../types";
 import {get} from "../../../utils";
 import {getDataByTypeId, getDataByTypeIdAndPage, VodAndDetail} from "../../index";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import Image from "next/image";
 import {Pagination} from "antd";
@@ -44,8 +44,15 @@ const TypeListPage = ({data, total}: { data: VodAndDetail[], total: number }) =>
     const router = useRouter()
     const {typeId, page} = router.query
 
+    //预渲染下一页
+    useEffect(() => {
+        (async () => {
+            await router.prefetch('/type/[typeId]/[page]', `/type/${typeId}/${+page! + 1}`)
+        })()
+    }, [page, router, typeId])
+
     const handleChangePage = async (v: number) => {
-        await router.prefetch('/type/[typeId]/[page]', `/type/${typeId}/${v}`)
+        await router.push('/type/[typeId]/[page]', `/type/${typeId}/${v}`)
     }
 
     return <MyList data={data} page={+page!} handleChangePage={handleChangePage} total={total}/>

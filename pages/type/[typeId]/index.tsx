@@ -34,7 +34,7 @@ const TypeList = ({data, total}: { data: VodAndDetail[], total: number }) => {
     const {typeId} = router.query
 
     const handleChangePage = async (v: number) => {
-        await router.prefetch('/type/[typeId]/[page]', `/type/${typeId}/${v}`)
+        await router.push('/type/[typeId]/[page]', `/type/${typeId}/${v}`)
     }
 
     return <MyList data={data} page={1} handleChangePage={handleChangePage} total={total}/>

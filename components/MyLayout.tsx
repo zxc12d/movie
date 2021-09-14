@@ -11,15 +11,15 @@ const MyLayout: React.FC = ({children}) => {
         <Layout>
             <MyHeader/>
             <Content
-                className={'px-2 w-full mt-20 md:w-2/3 lg:w-1/2 m-auto max-w-full'}
+                className={'px-2 w-full md:w-3/5 mt-5 m-auto'}
             >
                 {children}
             </Content>
 
             <Footer className="flex flex-col justify-center items-center text-center">
-                {/*<div className="pt-1">*/}
-                {/*    合作邮箱：*/}
-                {/*</div>*/}
+                <div className="pt-1">
+                    合作邮箱：sje9515@gmail.com
+                </div>
             </Footer>
             <BackTop/>
         </Layout>

@@ -16,7 +16,7 @@ const Item = ({img, id, title}: { img: string, id: number, title: string }) => {
         <a>
             <div className={'flex flex-col justify-center items-center px-1 cursor-pointer relative '}>
                 <Image src={img} alt={title}
-                       width={165} height={240}
+                       width={160} height={240}
                        className={'object-cover'}/>
                 <div className={'truncate w-40 text-center text-xl my-2 mb-10'}>{title}</div>
             </div>
@@ -27,7 +27,7 @@ const Item = ({img, id, title}: { img: string, id: number, title: string }) => {
 const HomeTitle = ({name, typeId}: { name: string, typeId: number }) => {
     return <div className={'flex items-center mb-2'}>
         <div className={'font-semibold text-3xl mr-5'}>{name}</div>
-        <Link href={`/type/${typeId}`}>
+        <Link href={`/type/${typeId}/1`}>
             <a>
                 <div className={'font-medium text-lg cursor-pointer select-none'}>{'查看更多 >'}</div>
             </a>
@@ -37,7 +37,7 @@ const HomeTitle = ({name, typeId}: { name: string, typeId: number }) => {
 
 //列表
 const HomeList = ({list}: { list: VodAndDetail[] }) => {
-    return <div className={'flex flex-wrap justify-center'}>
+    return <div className={'flex flex-wrap justify-between'}>
         {list.slice(0, 10).map(i => <Item id={i.vod_id} img={i.vod_pic} title={i.vod_name} key={i.vod_id}/>)}
     </div>
 }

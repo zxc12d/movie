@@ -43,7 +43,10 @@ function MyApp({Component, pageProps}: AppProps) {
             <title>猫视频</title>
         </Head>
         <MyLayout>
-            {isLoading ? <div className={'text-center absolute left-0 right-0'}>
+            {/*<div className={'text-center absolute inset-0 z-10 m-auto w-10 h-10 flex justify-center items-center'}>*/}
+            {/*    <Spin/>*/}
+            {/*</div>*/}
+            {isLoading ? <div className={'text-center absolute inset-0 z-10 m-auto w-10 h-10 flex justify-center items-center'}>
                 <Spin/>
             </div> : null }
             <Component {...pageProps} />
