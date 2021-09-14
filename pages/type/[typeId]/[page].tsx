@@ -27,7 +27,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
-    let typeId = params!.type_id
+    let typeId = params!.typeId
     let page = params!.page
     let data = await getDataByTypeIdAndPage(+typeId!, +page!)
     let vod: CommonResponse<Vod> = await get(`/provide/vod/?ac=list`)
@@ -35,7 +35,8 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
         props: {
             data,
             total: vod.total
-        }
+        },
+        revalidate:86400
     }
 }
 
