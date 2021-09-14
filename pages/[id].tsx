@@ -1,6 +1,6 @@
 import ReactPlayer from "react-player";
 import Image from "next/image";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {GetStaticPaths, GetStaticProps} from "next";
 import {CommonResponse, Vod, VodDetail} from "../types";
 import {get} from "../utils";
@@ -64,10 +64,16 @@ const computeUrl = (url: string | undefined) => {
 }
 
 const Detail = ({detail}: { detail: VodDetail }) => {
+    const url = detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1]
+    const [playUrl, setPlayUrl] = useState(url)
 
-    const [playUrl, setPlayUrl] = useState(detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1])
+    useEffect(() => {
+        if (!playUrl) {
+            setPlayUrl(url)
+        }
+    }, [playUrl, url])
 
-    return <div id={'pid'}>
+    return <div className={'mb-10'}>
         <div className={'flex flex-wrap md:flex-nowrap items-center mb-10'}>
             <div className={'w-full md:w-1/2 mr-5 text-center'}>
                 <Image src={detail?.vod_pic || ''} width={150} height={200} alt={detail?.vod_name}/>
@@ -82,7 +88,7 @@ const Detail = ({detail}: { detail: VodDetail }) => {
 
         <ReactPlayer url={playUrl} playing={true} controls={true} width={'100%'} height={'100%'}/>
 
-        <PlayList list={computeUrl(detail?.vod_play_url)[1]} setPlayUrl={setPlayUrl} />
+        <PlayList list={computeUrl(detail?.vod_play_url)[1]} setPlayUrl={setPlayUrl}/>
         {/*{computeUrl(detail.vod_play_url).map((i, index) => <PlayList list={i} setPlayUrl={setPlayUrl} key={index}/>)}*/}
     </div>
 
