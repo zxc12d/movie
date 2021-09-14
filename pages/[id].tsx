@@ -69,7 +69,7 @@ const computeUrl = (url: string) => {
 const Detail = ({detail}: { detail: VodDetail }) => {
 
     const [playUrl, setPlayUrl] = useState(detail?.vod_play_url.split('#')[0].split('$')[1])
-    console.log('play url:', playUrl)
+    // console.log('play url:', playUrl)
 
     return <div id={'pid'}>
         <div className={'flex flex-wrap md:flex-nowrap items-center mb-10'}>

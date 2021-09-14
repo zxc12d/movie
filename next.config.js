@@ -21,7 +21,7 @@ module.exports = withAntdLess({
         return [
             {
                 source: '/japi/:slug*',
-                destination:'https://m3u8.apibdzy.com/api.php/:slug*'
+                destination:'https://api.apibdzy.com/api.php/:slug*'
             }
         ]
     },
