@@ -2,8 +2,11 @@ import Axios from 'axios'
 import {useCallback, useEffect, useState} from 'react'
 import {message} from "antd";
 import {CommonResponse} from "../types";
+import getConfig from "next/config";
 
 let axios = Axios.create()
+
+const {serverRuntimeConfig, publicRuntimeConfig} = getConfig()
 
 const getRequest = (method: string) => {
     return async (url: string, data: any = null, options: any = {}) => {
@@ -11,7 +14,8 @@ const getRequest = (method: string) => {
             // let res = await axios.request<any, CommonResponse<any>>({
             let res = await axios.request({
                 // baseURL: process.env.NODE_ENV === 'production' ? '/api1/' : 'https://api.apibdzy.com/api.php/',
-                baseURL: 'https://api.apibdzy.com/api.php/',
+                // baseURL: 'https://api.apibdzy.com/api.php/',
+                baseURL: serverRuntimeConfig.baseUrl || '/api1/',
                 // @ts-ignore
                 method,
                 url,
@@ -33,7 +37,7 @@ const getRequest = (method: string) => {
             })
             return res.data
         } catch (e: any) {
-            message.error(JSON.stringify(e))
+            // message.error(JSON.stringify(e))
             return Promise.reject(e)
         }
     }

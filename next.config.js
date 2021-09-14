@@ -21,10 +21,17 @@ module.exports = withAntdLess({
         return [
             {
                 source: '/api1/:slug*',
-                destination:'https://api.apibdzy.com/api.php/:slug*'
+                destination:'https://m3u8.apibdzy.com/api.php/:slug*'
             }
         ]
     },
+    serverRuntimeConfig: {
+        // Will only be available on the server side
+       baseUrl:'https://api.apibdzy.com/api.php/'
+    },
+    // publicRuntimeConfig: {
+    //     // Will be available on both server and client
+    // },
 
     images:{
         domains:['img.hjimg.com','img.52swat.cn']

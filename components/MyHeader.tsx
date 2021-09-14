@@ -13,7 +13,7 @@ const MyHeader = () => {
     const [showSearch, setShowSearch] = useState(false)
     const [searchResult, setSearchResult] = useState<Vod[]>()
     const handleSearch = async () => {
-        let res: CommonResponse<Vod> = await get('https://api.apibdzy.com/api.php/provide/vod/?ac=list&wd=' + searchValue)
+        let res: CommonResponse<Vod> = await get('/provide/vod/?ac=list&wd=' + searchValue)
         setSearchResult(res.list)
         setShowSearch(true)
     }
