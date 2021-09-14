@@ -12,8 +12,8 @@ const getRequest = (method: string) => {
             let res = await axios.request({
                 // baseURL: process.env.NEXT_PUBLIC_BASE, // 请求域名地址
                 // baseURL: '/japi/',
-                baseURL: process.env.NODE_ENV === 'production' ? '/japi/' : 'https://api.apibdzy.com/api.php/',
-                // baseURL: 'https://api.apibdzy.com/api.php/',
+                // baseURL: process.env.NODE_ENV === 'production' ? '/japi/' : 'https://api.apibdzy.com/api.php/',
+                baseURL: 'https://api.apibdzy.com/api.php/',
                 // @ts-ignore
                 method,
                 url,
