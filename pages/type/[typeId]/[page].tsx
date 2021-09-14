@@ -16,7 +16,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     let pages = Array.from({length: (vod.pagecount < 5) ? vod.pagecount : 5}, (_, i) => i + 2)
     let paths: any[] = []
     for (let type of types) {
-        let list = pages.map(i => ({params: {page: '' + i, typeId: '' + type.type_id}}))
+        let list = pages?.map(i => ({params: {page: '' + i, typeId: '' + type.type_id}}))
         paths = paths.concat(list)
     }
 
