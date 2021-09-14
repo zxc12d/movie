@@ -10,14 +10,14 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link rel="shortcut icon" href="/favicon.ico"/>
+                    <link rel="shortcut icon" href="/favicon.png"/>
                     <meta
                         name="keywords"
                         content="电影,日韩,欧美,猫视频"
                     />
                     <meta
                         name="description"
-                        content="电影"
+                        content="电影,电影免费在线观看"
                     />
                     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0J47625QQ"/>
                     <script dangerouslySetInnerHTML={{
