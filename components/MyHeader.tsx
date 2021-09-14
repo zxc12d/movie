@@ -12,6 +12,13 @@ const MyHeader = () => {
     const [searchValue, setSearchValue] = useState('')
     const [showSearch, setShowSearch] = useState(false)
     const [searchResult, setSearchResult] = useState<Vod[]>()
+
+    const hideSearchResult=()=>{
+        setSearchResult(undefined)
+        setShowSearch(false)
+        setSearchValue('')
+    }
+
     const handleSearch = async () => {
         let res: CommonResponse<Vod> = await get('/provide/vod/?ac=list&wd=' + searchValue)
         setSearchResult(res.list)
@@ -19,9 +26,7 @@ const MyHeader = () => {
     }
 
     const handleDoSearch = async (id: number) => {
-        setSearchResult(undefined)
-        setShowSearch(false)
-        setSearchValue('')
+        hideSearchResult()
         await router.push('/' + id)
 
     }
@@ -44,14 +49,15 @@ const MyHeader = () => {
                            }
                        }}
                        className={'bg-gray-700 w-2/3 focus:outline-none'}/>
+                {searchValue ? <div onClick={hideSearchResult} className={'cursor-pointer absolute'}>取消</div> : null}
                 <SearchOutlined onClick={handleSearch} style={{fontSize: '18px', color: '#08c'}}/>
                 {showSearch ? <div className={'absolute z-10 bg-gray-600 w-2/3 left-0 top-full mt-1 px-4 py-2 rounded'}>
-                    {searchResult?.map(i =>
+                    {searchResult !== null && (searchResult?.length || 0 > 0) && searchResult?.map(i =>
                         <div onClick={() => handleDoSearch(i.vod_id)}
                              className={'cursor-pointer pb-2 hover:bg-gray-400'} key={i.vod_id}>
                             {i.vod_name}
                         </div>
-                    )}
+                    ) || <div>没找到资源哦~</div>}
                 </div> : null}
             </div>
 
