@@ -10,7 +10,9 @@ import {CommonResponse, Vod, VodDetail} from "../types";
 import {get} from "../utils";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    let pages = Array.from({length: 5}, (_, i) => i + 1)
+    let vod: CommonResponse<Vod> = await get(`/provide/vod/?ac=list`)
+    vod.list.map(i => i.vod_id)
+    let pages = vod.list.map(i => i.vod_id).splice(0, 50)
     let paths = pages.map(i => ({params: {id: '' + i}}))
 
     return {
