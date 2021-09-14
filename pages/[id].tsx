@@ -38,13 +38,13 @@ const PlayList = ({list, setPlayUrl}: { list: PlayItem[], setPlayUrl: (i: string
     const [currIndex, setCurrIndex] = useState<number>(0)
 
     return <div className={'flex flex-wrap mt-4'}>
-        {list.map((i, index) =>
+        {list?.map((i, index) =>
             <div key={index} onClick={() => {
                 setCurrIndex(index)
-                setPlayUrl(i.url)
+                setPlayUrl(i?.url)
             }} className={`border-2 border-gray-500 mr-2 mt-2 px-2 py-1 rounded-full hover:bg-blue-400 cursor-pointer
              ${currIndex === index ? 'bg-blue-300' : ''}`}>
-                <span>{i.name}</span>
+                <span>{i?.name}</span>
             </div>)}
     </div>
 }
