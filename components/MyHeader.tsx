@@ -1,9 +1,8 @@
-import {useCallback, useContext, useEffect, useState} from "react";
+import { useContext,  useState} from "react";
 import Link from 'next/link'
 import {GlobalCxt} from "../pages/_app";
 import {useRouter} from "next/router";
 import {SearchOutlined} from "@ant-design/icons";
-import {number} from "prop-types";
 import {get} from "../utils";
 import {CommonResponse, Vod} from "../types";
 
@@ -33,7 +32,9 @@ const MyHeader = () => {
     return <div className={'bg-gray-900  text-white flex h-14 items-center'}>
         <div className={'w-2/3 flex justify-between mx-auto items-center'}>
             <Link href={'/'} passHref={true}>
-                <div className={'w-2/3 outline-none text-2xl cursor-pointer'}>猫视频</div>
+                <a>
+                    <div className={'w-2/3 outline-none text-2xl cursor-pointer'}>猫视频</div>
+                </a>
             </Link>
             <div className={'bg-gray-700 flex flex-auto relative justify-around items-center rounded-full h-8'}>
                 <input value={searchValue}

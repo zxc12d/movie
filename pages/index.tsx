@@ -12,11 +12,13 @@ export type VodAndDetail = Vod & {
 
 //列表项
 const Item = ({img, id, title}: { img: string, id: number, title: string }) => {
-    return <Link href={`/${id}`} passHref={true}>
-        <div className={'flex flex-col justify-center items-center px-1 cursor-pointer'}>
-            <Image src={img} alt={title} width={160} height={240} className={'object-cover'}/>
-            <div className={'truncate w-40 text-center text-xl my-2 mb-10'}>{title}</div>
-        </div>
+    return <Link href={`/${id}`}>
+        <a>
+            <div className={'flex flex-col justify-center items-center px-1 cursor-pointer'}>
+                <Image src={img} alt={title} width={160} height={240} className={'object-cover'}/>
+                <div className={'truncate w-40 text-center text-xl my-2 mb-10'}>{title}</div>
+            </div>
+        </a>
     </Link>
 }
 

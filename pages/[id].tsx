@@ -66,7 +66,6 @@ const computeUrl = (url: string | undefined) => {
 const Detail = ({detail}: { detail: VodDetail }) => {
 
     const [playUrl, setPlayUrl] = useState(detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1])
-    // console.log('play url:', playUrl)
 
     return <div id={'pid'}>
         <div className={'flex flex-wrap md:flex-nowrap items-center mb-10'}>
@@ -80,11 +79,10 @@ const Detail = ({detail}: { detail: VodDetail }) => {
                 <div>简介: {detail?.vod_blurb}</div>
             </div>
         </div>
-        {process.browser ?
-            <ReactPlayer url={playUrl} playing={true} controls={true} width={'100%'} height={'100%'}/>
-            : null}
 
-        <PlayList list={computeUrl(detail?.vod_play_url)[1]} setPlayUrl={setPlayUrl}/>
+        <ReactPlayer url={playUrl} playing={true} controls={true} width={'100%'} height={'100%'}/>
+
+        <PlayList list={computeUrl(detail?.vod_play_url)[1]} setPlayUrl={setPlayUrl} />
         {/*{computeUrl(detail.vod_play_url).map((i, index) => <PlayList list={i} setPlayUrl={setPlayUrl} key={index}/>)}*/}
     </div>
 
