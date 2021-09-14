@@ -72,11 +72,11 @@ const Detail = ({detail}: { detail: VodDetail }) => {
             <div className={'w-full md:w-1/2 mr-5 text-center'}>
                 <Image src={detail?.vod_pic || ''} width={150} height={200} alt={detail?.vod_name}/>
             </div>
-            <div className={'flex flex-col flex-wrap'}>
-                <div className={'text-2xl font-bold'}>{detail?.vod_name}</div>
-                <div className={'my-1 font-medium'}>{detail?.vod_pubdate}</div>
-                <div className={'mb-2 font-bold'}>{detail?.vod_actor}</div>
-                <div>简介: {detail?.vod_blurb}</div>
+            <div className={'break-words w-full'}>
+                <p className={'text-2xl font-bold'}>{detail?.vod_name}</p>
+                <p className={'my-1 font-medium'}>{detail?.vod_pubdate}</p>
+                <p className={'mb-2 font-bold'}>{detail?.vod_actor}</p>
+                <p>简介: {detail?.vod_blurb}</p>
             </div>
         </div>
 

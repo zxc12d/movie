@@ -1,4 +1,4 @@
-import { useContext,  useState} from "react";
+import {useContext, useState} from "react";
 import Link from 'next/link'
 import {GlobalCxt} from "../pages/_app";
 import {useRouter} from "next/router";
@@ -13,8 +13,7 @@ const MyHeader = () => {
     const [showSearch, setShowSearch] = useState(false)
     const [searchResult, setSearchResult] = useState<Vod[]>()
     const handleSearch = async () => {
-        let res: CommonResponse<Vod> = await get('/provide/vod/?ac=list&wd=' + searchValue)
-        console.log(res)
+        let res: CommonResponse<Vod> = await get('https://api.apibdzy.com/api.php/provide/vod/?ac=list&wd=' + searchValue)
         setSearchResult(res.list)
         setShowSearch(true)
     }
@@ -30,16 +29,20 @@ const MyHeader = () => {
     // if (isLoading) return <div>loading...</div>
 
     return <div className={'bg-gray-900  text-white flex h-14 items-center'}>
-        <div className={'w-2/3 flex justify-between mx-auto items-center'}>
+        <div className={'w-full md:w-2/3 px-2 flex justify-between mx-auto items-center'}>
             <Link href={'/'} passHref={true}>
-                <a>
-                    <div className={'w-2/3 outline-none text-2xl cursor-pointer'}>猫视频</div>
+                <a className={'w-2/3 text-2xl cursor-pointer'}>
+                    <div>猫视频</div>
                 </a>
             </Link>
             <div className={'bg-gray-700 flex flex-auto relative justify-around items-center rounded-full h-8'}>
                 <input value={searchValue}
                        onChange={(e) => setSearchValue(e.target.value)}
-                    // onKeyPress={}
+                       onKeyPress={async e => {
+                           if (e.key === 'Enter') {
+                               await handleSearch()
+                           }
+                       }}
                        className={'bg-gray-700 w-2/3 focus:outline-none'}/>
                 <SearchOutlined onClick={handleSearch} style={{fontSize: '18px', color: '#08c'}}/>
                 {showSearch ? <div className={'absolute z-10 bg-gray-600 w-2/3 left-0 top-full mt-1 px-4 py-2 rounded'}>

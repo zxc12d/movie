@@ -10,9 +10,7 @@ const getRequest = (method: string) => {
         try {
             // let res = await axios.request<any, CommonResponse<any>>({
             let res = await axios.request({
-                // baseURL: process.env.NEXT_PUBLIC_BASE, // 请求域名地址
-                // baseURL: '/japi/',
-                // baseURL: process.env.NODE_ENV === 'production' ? '/japi/' : 'https://api.apibdzy.com/api.php/',
+                // baseURL: process.env.NODE_ENV === 'production' ? '/api1/' : 'https://api.apibdzy.com/api.php/',
                 baseURL: 'https://api.apibdzy.com/api.php/',
                 // @ts-ignore
                 method,
@@ -47,25 +45,3 @@ export const fetcher = get
 
 export const post = getRequest('POST')
 
-export function useGetSize() {
-    const [size, setSize] = useState({
-        width: document.documentElement.clientWidth,
-        height: document.documentElement.clientHeight,
-    })
-
-    const onResize = useCallback(() => {
-        setSize({
-            width: document.documentElement.clientWidth,
-            height: document.documentElement.clientHeight,
-        })
-    }, [])
-
-    useEffect(() => {
-        window.addEventListener('resize', onResize)
-        return () => {
-            window.removeEventListener('resize', onResize)
-        }
-    }, [onResize])
-
-    return size
-}

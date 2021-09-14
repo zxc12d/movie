@@ -20,7 +20,7 @@ module.exports = withAntdLess({
     async rewrites() {
         return [
             {
-                source: '/japi/:slug*',
+                source: '/api1/:slug*',
                 destination:'https://api.apibdzy.com/api.php/:slug*'
             }
         ]
