@@ -1,17 +1,14 @@
-import {GetServerSideProps, GetStaticPaths, GetStaticProps} from "next";
+import {GetStaticPaths, GetStaticProps} from "next";
 import {useRouter} from "next/router";
 import {get} from "../../../utils";
 import {CommonResponse, Vod} from "../../../types";
-import {getDataByName, getDataByTypeId, getDataByTypeIdAndPage, VodAndDetail} from "../../index";
-import Image from "next/image";
-import {Pagination} from "antd";
-import {useState} from "react";
+import {getDataByTypeId, VodAndDetail} from "../../index";
 import MyList from "../../../components/MyList";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     let vod: CommonResponse<Vod> = await get(`/provide/vod/?ac=list`)
     let types = vod.class
-    let paths = types.map(i => ({params: {typeId: '' + i.type_id}}))
+    let paths = types?.map(i => ({params: {typeId: '' + i.type_id}}))
 
     return {
         paths,

@@ -13,7 +13,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     let types = vod.class
 
     //最多取5页
-    let pages = Array.from({length: (vod.pagecount < 5) ? vod.pagecount : 5}, (_, i) => i + 1)
+    let pages = Array.from({length: (vod.pagecount < 5) ? vod.pagecount : 5}, (_, i) => i + 2)
     let paths: any[] = []
     for (let type of types) {
         let list = pages.map(i => ({params: {page: '' + i, typeId: '' + type.type_id}}))

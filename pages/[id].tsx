@@ -1,19 +1,15 @@
-import {useRouter} from "next/router";
-import {useVodDetail} from "../hooks/useVod";
 import ReactPlayer from "react-player";
-import {Spin} from "antd";
 import Image from "next/image";
 import {useState} from "react";
 import {GetStaticPaths, GetStaticProps} from "next";
-import {getDataByTypeIdAndPage} from "./index";
 import {CommonResponse, Vod, VodDetail} from "../types";
 import {get} from "../utils";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     let vod: CommonResponse<Vod> = await get(`/provide/vod/?ac=list`)
-    vod.list.map(i => i.vod_id)
-    let pages = vod.list.map(i => i.vod_id).splice(0, 50)
-    let paths = pages.map(i => ({params: {id: '' + i}}))
+    vod?.list?.map(i => i.vod_id)
+    let pages = vod?.list?.map(i => i.vod_id).splice(0, 50)
+    let paths = pages?.map(i => ({params: {id: '' + i}}))
 
     return {
         paths,
@@ -25,8 +21,6 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
     let id = params!.id
     let res: CommonResponse<VodDetail> = await get(`/provide/vod/?ac=detail&ids=${id}`)
     let detail = res.list[0]
-    console.log('id:', id)
-    console.log('res:', res)
 
     return {
         props: {
@@ -59,7 +53,7 @@ const computeUrl = (url: string) => {
     let a = url.split('$$$')
     let res = []
     for (let u of a) {
-        let tmp = u.split('#').map(i => {
+        let tmp = u.split('#')?.map(i => {
             let tmp = i.split('$')
             return {name: tmp[0], url: tmp[1]}
         })
