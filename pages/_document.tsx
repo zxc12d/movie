@@ -19,14 +19,14 @@ class MyDocument extends Document {
                         name="description"
                         content="电影,电影免费在线观看"
                     />
-                    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0J47625QQ"/>
+                    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y7Q509F5JE"/>
                     <script dangerouslySetInnerHTML={{
                         __html: `
                       window.dataLayer = window.dataLayer || [];
                         function gtag(){dataLayer.push(arguments);}
                         gtag('js', new Date());
 
-                        gtag('config', 'G-P0J47625QQ');
+                        gtag('config', 'G-Y7Q509F5JE');
                     `
                     }}/>
                 </Head>

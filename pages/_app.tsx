@@ -1,6 +1,6 @@
 import type {AppProps} from 'next/app'
 import Head from "next/head";
-import 'antd/dist/antd.css'
+// import 'antd/dist/antd.css'
 import "tailwindcss/tailwind.css";
 import MyLayout from "../components/MyLayout";
 import React, {useEffect, useState} from "react";
@@ -21,11 +21,9 @@ function MyApp({Component, pageProps}: AppProps) {
     useEffect(() => {
         const handleRouteChange = (url: string) => {
             setIsLoading(true)
-            console.log('App is changing to: ', url)
         }
         const handleRouteFinish = (url: string) => {
             setIsLoading(false)
-            console.log(`${url} finish`)
         }
 
         router.events.on('routeChangeStart', handleRouteChange)
