@@ -49,7 +49,8 @@ const PlayList = ({list, setPlayUrl}: { list: PlayItem[], setPlayUrl: (i: string
     </div>
 }
 
-const computeUrl = (url: string) => {
+const computeUrl = (url: string | undefined) => {
+    if (!url) return []
     let a = url.split('$$$')
     let res = []
     for (let u of a) {
@@ -64,7 +65,7 @@ const computeUrl = (url: string) => {
 
 const Detail = ({detail}: { detail: VodDetail }) => {
 
-    const [playUrl, setPlayUrl] = useState(detail?.vod_play_url.split('#')[0].split('$')[1])
+    const [playUrl, setPlayUrl] = useState(detail?.vod_play_url?.split('#')[0].split('$')[1])
     // console.log('play url:', playUrl)
 
     return <div id={'pid'}>
@@ -83,7 +84,7 @@ const Detail = ({detail}: { detail: VodDetail }) => {
             <ReactPlayer url={playUrl} playing={true} controls={true} width={'100%'} height={'100%'}/>
             : null}
 
-        <PlayList list={computeUrl(detail.vod_play_url)[1]} setPlayUrl={setPlayUrl}/>
+        <PlayList list={computeUrl(detail?.vod_play_url)[1]} setPlayUrl={setPlayUrl}/>
         {/*{computeUrl(detail.vod_play_url).map((i, index) => <PlayList list={i} setPlayUrl={setPlayUrl} key={index}/>)}*/}
     </div>
 
