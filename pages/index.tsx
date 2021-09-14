@@ -1,12 +1,12 @@
 import type {GetStaticProps, InferGetStaticPropsType, NextPage} from 'next'
 import {useContext} from "react";
-import {CommonResponse, Vod, VodDetail} from "../types";
+import {ClassType, CommonResponse, Vod, VodDetail} from "../types";
 import Image from "next/image";
 import {GlobalCxt} from "./_app";
 import Link from 'next/link'
 import {get} from "../utils";
 
-type VodAndDetail = Vod & {
+export type VodAndDetail = Vod & {
     vod_pic: string
 }
 
@@ -20,30 +20,41 @@ const Item = ({img, id, title}: { img: string, id: number, title: string }) => {
     </Link>
 }
 
+export async function getDataByTypeId(typeId: number): Promise<VodAndDetail[]> {
+    return getDataByTypeIdAndPage(typeId, 1)
+}
+
+export async function getDataByTypeIdAndPage(typeId: number, page: number): Promise<VodAndDetail[]> {
+    let movies: CommonResponse<Vod> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=list&t=${typeId}&pg=${page}`)
+    let movieDetail: CommonResponse<VodDetail> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=detail&ids=${movies.list.map(i => i.vod_id).join(',')}`)
+
+    return movies.list.map(i => {
+        let detail = movieDetail.list.find(j => j.vod_id === i.vod_id)
+        return {...i, vod_pic: detail?.vod_pic || ''}
+    })
+}
+
+export async function getDataByName(name: string, vod?: CommonResponse<Vod>) {
+    if (!vod) {
+        vod = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=list&pg=1`)
+    }
+    let typeId = vod!.class.find(i => i.type_name.endsWith(name))?.type_id
+
+    return await getDataByTypeId(typeId!)
+}
+
 export const getStaticProps: GetStaticProps = async (context) => {
     let vod: CommonResponse<Vod> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=list&pg=1`)
 
-    async function getData(name: string) {
-        let typeId = vod.class.find(i => i.type_name.endsWith(name))?.type_id
-        let movies: CommonResponse<Vod> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=list&pg=1&t=${typeId}`)
-        let movieDetail: CommonResponse<VodDetail> = await get(`https://api.apibdzy.com/api.php/provide/vod/?ac=detail&ids=${movies.list.map(i => i.vod_id).join(',')}`)
-
-        let movieData: VodAndDetail[] = movies.list.map(i => {
-            let detail = movieDetail.list.find(j => j.vod_id === i.vod_id)
-            return {...i, vod_pic: detail?.vod_pic || ''}
-        })
-        return movieData
-    }
-
     //电影列表
-    let movieData = await getData('片')
+    let movieData = await getDataByName('片')
     // console.log('moivdata:',movieData)
     //电视剧列表
-    let serialsData = await getData('剧')
+    let serialsData = await getDataByName('剧')
     //娱乐列表
-    let funData = await getData('综艺')
+    let funData = await getDataByName('综艺')
     //动漫列表
-    let cartoonData = await getData('动漫')
+    let cartoonData = await getDataByName('动漫')
 
     return {
         props: {
@@ -59,10 +70,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 //标题
-const HomeTitle = ({name}: { name: string }) => {
+const HomeTitle = ({name, typeId}: { name: string, typeId: number }) => {
     return <div className={'flex items-center mb-2'}>
         <div className={'font-semibold text-3xl mr-5'}>{name}</div>
-        <div className={'font-medium'}>{'查看更多 >'}</div>
+        <Link href={`/type/${typeId}`} passHref={true}>
+            <div className={'font-medium text-lg cursor-pointer'}>{'查看更多 >'}</div>
+        </Link>
     </div>
 }
 
@@ -83,6 +96,9 @@ const Home: NextPage = ({
                         }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const global = useContext(GlobalCxt)
 
+    const getTypeIdByName = (name: string): number => {
+        return classList.find((i: ClassType) => i.type_name.endsWith(name)).type_id
+    }
     return <div>
         {/* 分类 */}
         {/*<div className={'flex flex-wrap mb-8'}>*/}
@@ -93,19 +109,19 @@ const Home: NextPage = ({
         {/*    </div>)}</div>*/}
 
         <div>
-            <HomeTitle name={'电影'}/>
+            <HomeTitle name={'电影'} typeId={getTypeIdByName('片')}/>
             <HomeList list={movieData}/>
         </div>
         <div>
-            <HomeTitle name={'电视剧'}/>
+            <HomeTitle name={'电视剧'} typeId={getTypeIdByName('剧')}/>
             <HomeList list={serialsData}/>
         </div>
         <div>
-            <HomeTitle name={'综艺'}/>
+            <HomeTitle name={'综艺'} typeId={getTypeIdByName('综艺')}/>
             <HomeList list={funData}/>
         </div>
         <div>
-            <HomeTitle name={'动漫'}/>
+            <HomeTitle name={'动漫'} typeId={getTypeIdByName('动漫')}/>
             <HomeList list={cartoonData}/>
         </div>
         {/*<div className={'flex flex-wrap'}>*/}

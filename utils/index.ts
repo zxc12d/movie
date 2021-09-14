@@ -5,44 +5,14 @@ import {CommonResponse} from "../types";
 
 let axios = Axios.create()
 
-
-// 拦截请求，给所有的请求都带上token
-// if (process.browser) {
-//     axios.interceptors.request.use((request) => {
-//         const jwt_token = localStorage.getItem('jwt_token')
-//         if (jwt_token) {
-//             // request.headers['Authorization'] = `Bearer ${jwt_token}`
-//             request.headers['Authorization'] = `${jwt_token}`
-//         }
-//         return request
-//     })
-// }
-
-// 添加响应拦截器
-// axios.interceptors.response.use(
-//     (res) => {
-//         // return res.data
-//         let data = res.data
-//         if (data.code !== 0) {
-//             return Promise.reject(data.msg)
-//         } else {
-//             return data
-//         }
-//     },
-//     async (error) => {
-//         console.log('response interceptors err:', JSON.stringify(error))
-//         // 对响应错误做点什么
-//         return Promise.reject(error)
-//     }
-// )
-
 const getRequest = (method: string) => {
     return async (url: string, data: any = null, options: any = {}) => {
         try {
             // let res = await axios.request<any, CommonResponse<any>>({
             let res = await axios.request({
                 // baseURL: process.env.NEXT_PUBLIC_BASE, // 请求域名地址
-                baseURL: '/japi/',
+                // baseURL: '/japi/',
+                baseURL: process.env.NODE_ENV === 'production' ? '/japi/' : 'https://api.apibdzy.com/api.php/',
                 // baseURL: 'https://api.apibdzy.com/api.php/',
                 // @ts-ignore
                 method,
