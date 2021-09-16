@@ -58,7 +58,7 @@ async function getDataByList(movies: CommonResponse<Vod>) {
 }
 
 export async function getDataByTypeIdAndPage(typeId: number, page: number): Promise<VodAndDetail[]> {
-    let movies: CommonResponse<Vod> = await get(`provide/vod/?ac=list&h=24&t=${typeId}&pg=${page}`)
+    let movies: CommonResponse<Vod> = await get(`provide/vod/?ac=list&t=${typeId}&pg=${page}`)
     return await getDataByList(movies)
 }
 
@@ -71,7 +71,7 @@ export async function getDataByName(name: string, vod?: CommonResponse<Vod>) {
     return await getDataByTypeId(typeId!)
 }
 
-//24小时最新电影
+//24小时最新影视
 async function getLatestData() {
     let movies: CommonResponse<Vod> = await get(`provide/vod/?ac=list&pg=1&h=24`)
     return await getDataByList(movies)
