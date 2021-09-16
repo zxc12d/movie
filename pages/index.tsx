@@ -5,7 +5,6 @@ import Image from "next/image";
 import {GlobalCxt} from "./_app";
 import Link from 'next/link'
 import {get} from "../utils";
-import {Tag} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 
 export type VodAndDetail = Vod & {
@@ -59,7 +58,7 @@ async function getDataByList(movies: CommonResponse<Vod>) {
 }
 
 export async function getDataByTypeIdAndPage(typeId: number, page: number): Promise<VodAndDetail[]> {
-    let movies: CommonResponse<Vod> = await get(`provide/vod/?ac=list&t=${typeId}&pg=${page}`)
+    let movies: CommonResponse<Vod> = await get(`provide/vod/?ac=list&h=24&t=${typeId}&pg=${page}`)
     return await getDataByList(movies)
 }
 
