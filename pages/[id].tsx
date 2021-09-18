@@ -165,7 +165,7 @@ const Detail = ({
             {/* add link */}
             <div className="mt-10 mb-5 text-xl ">猜你想看 :</div>
             <div className="flex flex-wrap space-x-5">
-                {moreItem.map((i: VodDetail) => (
+                {moreItem?.map((i: VodDetail) => (
                     <div key={i.type_id}>
                         <MovieItem
                             img={i.vod_pic}
