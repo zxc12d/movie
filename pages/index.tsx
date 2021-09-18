@@ -39,8 +39,8 @@ const HomeTitle = ({name, typeId}: { name: string, typeId?: number }) => {
 
 //列表
 const HomeList = ({list, count}: { list: VodAndDetail[], count?: number }) => {
-    return <div className={'flex flex-wrap justify-between'}>
-        {list.slice(0, count || 10).map(i => <Item id={i.vod_id} img={i.vod_pic} title={i.vod_name} key={i.vod_id}/>)}
+    return <div className={'grid grid-cols-2 md:grid-cols-5 lg:grid-cols-8'}>
+        {list.slice(0, count || 15).map(i => <Item id={i.vod_id} img={i.vod_pic} title={i.vod_name} key={i.vod_id}/>)}
     </div>
 }
 
@@ -135,6 +135,7 @@ const Home: NextPage = ({
 
 
     return <div>
+        <div className={'text-right'}>电影总数：<span className={'text-red-500'}>{total}</span></div>
         {/* 分类 */}
         <div onClick={toggleShowAllType} className={'mb-2 select-none cursor-pointer flex items-center transition-all duration-500'}>
             <span>{showAllTypes ? '隐藏 ' : '展开全部 '}</span>
@@ -148,9 +149,6 @@ const Home: NextPage = ({
                         className={'cursor-pointer mr-5 mb-2 hover:bg-blue-200 border-2 border-gray-500 rounded-full px-3 py-1'}>
                         {i.type_name}
                     </div>
-                    {/*<Tag*/}
-                    {/*    className={'mr-8 mb-2 hover:bg-blue-100  rounded-full px-3 py-1'}*/}
-                    {/*>{i.type_name}</Tag>*/}
                 </a>
             </Link>)}
         </div>
@@ -176,13 +174,6 @@ const Home: NextPage = ({
             <HomeTitle name={'动漫'} typeId={getTypeIdByName('动漫')}/>
             <HomeList list={cartoonData}/>
         </div>
-        {/*<div className={'flex flex-wrap'}>*/}
-        {/*    {vodData?.map(i => <Item id={i.vod_id} img={i.vod_pic} title={i.vod_name} key={i.vod_id}/>)}*/}
-        {/*</div>*/}
-
-        {/* 分页*/}
-        {/*<Pagination showQuickJumper current={currPage} pageSize={20} showSizeChanger={false} total={total}*/}
-        {/*            onChange={handleChangePage}/>*/}
     </div>;
 }
 
