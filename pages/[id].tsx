@@ -96,17 +96,25 @@ const Detail = ({
     detail: VodDetail
     moreItem: VodDetail[]
 }) => {
-    const url = detail?.vod_play_url
-        ?.split('$$$')[1]
-        .split('#')[0]
-        .split('$')[1]
-    const [playUrl, setPlayUrl] = useState(url)
+    // const url = detail?.vod_play_url
+    //     ?.split('$$$')[1]
+    //     .split('#')[0]
+    //     .split('$')[1]
+    // const [url, setUrl] = useState(
+    //     detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1]
+    // )
+    const [playUrl, setPlayUrl] = useState(
+        detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1]
+    )
 
     useEffect(() => {
-        if (!playUrl) {
-            setPlayUrl(url)
-        }
-    }, [playUrl, url])
+        // if (!playUrl) {
+        setPlayUrl(
+            detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1]
+        )
+        // }
+        // }, [playUrl, url])
+    }, [detail])
 
     const [p1Playing, setP1Playing] = useState(true)
     const handleChangePlayer = (i: string) => {
@@ -164,9 +172,9 @@ const Detail = ({
 
             {/* add link */}
             <div className="mt-10 mb-5 text-xl ">猜你想看 :</div>
-            <div className="flex flex-wrap space-x-5">
+            <div className="flex flex-wrap">
                 {moreItem?.map((i: VodDetail) => (
-                    <div key={i.type_id}>
+                    <div key={i.type_id} className="mr-3">
                         <MovieItem
                             img={i.vod_pic}
                             id={i.vod_id}
