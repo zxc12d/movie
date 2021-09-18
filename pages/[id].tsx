@@ -8,6 +8,8 @@ import { Tabs } from 'antd'
 import { TabPane } from 'rc-tabs'
 import MovieItem from '../components/MovieItem'
 
+const MORE_COUNT = 10
+
 export const getStaticPaths: GetStaticPaths = async () => {
     let vod: CommonResponse<Vod> = await get(`/provide/vod/?ac=list`)
     vod?.list?.map((i) => i.vod_id)
@@ -27,9 +29,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     )
     let detail = res.list[0]
 
-    //获取5个推荐
+    //获取推荐
     let ids = []
-    for (let index = 1; index <= 5; index++) {
+    for (let index = -10; index <= 2 * MORE_COUNT; index++) {
         ids.push(+id! + index)
     }
     res = await get(`/provide/vod/?ac=detail&ids=${ids}`)
@@ -37,7 +39,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return {
         props: {
             detail,
-            moreItem: res.list,
+            moreItem: res.list.slice(0, MORE_COUNT),
         },
     }
 }
@@ -96,24 +98,14 @@ const Detail = ({
     detail: VodDetail
     moreItem: VodDetail[]
 }) => {
-    // const url = detail?.vod_play_url
-    //     ?.split('$$$')[1]
-    //     .split('#')[0]
-    //     .split('$')[1]
-    // const [url, setUrl] = useState(
-    //     detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1]
-    // )
     const [playUrl, setPlayUrl] = useState(
         detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1]
     )
 
     useEffect(() => {
-        // if (!playUrl) {
         setPlayUrl(
             detail?.vod_play_url?.split('$$$')[1].split('#')[0].split('$')[1]
         )
-        // }
-        // }, [playUrl, url])
     }, [detail])
 
     const [p1Playing, setP1Playing] = useState(true)
@@ -170,18 +162,20 @@ const Detail = ({
                 setPlayUrl={setPlayUrl}
             />
 
-            {/* add link */}
+            {/* 推荐 */}
             <div className="mt-10 mb-5 text-xl ">猜你想看 :</div>
             <div className="flex flex-wrap">
-                {moreItem?.map((i: VodDetail) => (
-                    <div key={i.type_id} className="mr-3">
-                        <MovieItem
-                            img={i.vod_pic}
-                            id={i.vod_id}
-                            title={i.vod_name}
-                        />
-                    </div>
-                ))}
+                {moreItem
+                    ?.slice(moreItem?.length - MORE_COUNT)
+                    .map((i: VodDetail) => (
+                        <div key={i.type_id} className="mr-3">
+                            <MovieItem
+                                img={i.vod_pic}
+                                id={i.vod_id}
+                                title={i.vod_name}
+                            />
+                        </div>
+                    ))}
             </div>
         </div>
     )
