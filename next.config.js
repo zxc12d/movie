@@ -22,9 +22,28 @@ module.exports = withAntdLess({
             {
                 source: '/api1/:slug*',
                 destination:'https://m3u8.apibdzy.com/api.php/:slug*'
+            },
+            {
+                source: '/api2/:slug*',
+                destination:'http://localhost:8000/:slug*'
             }
         ]
     },
+    async redirects() {
+        return [
+            {
+                source: '/api1/:slug*',
+                destination:'https://m3u8.apibdzy.com/api.php/:slug*',
+                permanent: true,
+            },
+            {
+                source: '/api2/:slug*',
+                destination:'http://localhost:8000/:slug*',
+                permanent: true,
+            }
+        ]
+    },
+    poweredByHeader: false,
     serverRuntimeConfig: {
         // Will only be available on the server side
        baseUrl:'https://api.apibdzy.com/api.php/'

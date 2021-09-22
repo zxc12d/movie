@@ -167,8 +167,8 @@ const Detail = ({
             <div className="flex flex-wrap">
                 {moreItem
                     ?.slice(moreItem?.length - MORE_COUNT)
-                    .map((i: VodDetail) => (
-                        <div key={i.type_id} className="mr-3">
+                    .map((i: VodDetail, index) => (
+                        <div key={index} className="mr-3">
                             <MovieItem
                                 img={i.vod_pic}
                                 id={i.vod_id}
